@@ -19,7 +19,7 @@ if (process.env.NODE_ENV === 'production') {
 // Returns a JS Promise
 const getYelpAPI = async () => {
   return axios.get(
-    'https://api.yelp.com/v3/businsses/search?location="2650 NW 5 Ave, Miami, FL 33127"&term="lunch"&radius=300',
+    'https://api.yelp.com/v3/businesses/search?location="2650 NW 5 Ave, Miami, FL 33127"&term="lunch"&radius=300',
     { headers: { Authorization: `Bearer ${process.env.YELP_API_KEY}` } }
   );
 };
