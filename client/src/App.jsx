@@ -1,28 +1,39 @@
 import React, { useState, useEffect } from 'react';
-import { AppContextProvider } from './context/AppContext';
-import ContextDemo from './components/ContextDemo';
-
-import './App.css';
+import axios from 'axios';
+import Card from './components/Card';
 
 const App = () => {
-  const [serverMessage, setServerMessage] = useState('');
+  const [places, setPlaces] = useState([]);
+  const [isLoading, setLoading] = useState(true);
+  const [isError, setError] = useState(false);
 
-  const fetchDemoData = () => {
-    fetch('/api/demo')
-      .then((response) => response.json())
-      .then((data) => setServerMessage(data.message));
-  };
+  useEffect(() => {
+    const callOurYelpAPI = async () => {
+      try {
+        const resp = await axios.get('/api/yelp');
+        setPlaces(resp.data);
+        setLoading(false);
+      } catch (e) {
+        setLoading(false);
+        setError(true);
+      }
+    };
 
-  useEffect(fetchDemoData, []);
-
+    callOurYelpAPI();
+  }, []);
   return (
-    <AppContextProvider>
-      <div id="demo">
-        <h3>Hello from client/src/App.js</h3>
-        <ContextDemo />
-        <h3>{serverMessage}</h3>
-      </div>
-    </AppContextProvider>
+    <div id="app" className="container">
+      <h1 className="title">Wyncode Does Lunch</h1>
+      {isError && <div class="err">Oh no, something went wrong :(</div>}
+      {isLoading ? (
+        <div className="loading">Loading...</div>
+      ) : (
+        <div className="columns is-multiline">
+          {places.length &&
+            places.map((place) => <Card key={place.id} place={place} />)}
+        </div>
+      )}
+    </div>
   );
 };
 
