@@ -14,7 +14,7 @@
     "prettier": "^2.0.5"
   },
   "scripts": {
-    "start": "node index.js",
+    "start": "node server.js",
     "server": "nodemon server.js",
     "client": "cd client && yarn run start",
     "dev": "concurrently \"yarn run server\" \"yarn run client\"",
